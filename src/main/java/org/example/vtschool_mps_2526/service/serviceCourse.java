@@ -36,7 +36,7 @@ public class serviceCourse {
 
         Optional<CourseEntity> courseEntity = courseDAO.findById(course.getId());
 
-        if(courseEntity.isPresent()) {
+        if(!courseEntity.isPresent()) {
             return courseDAO.save(CourseMapper.INSTANCE.mapCourseDTOToCourseEntity(course));
         }
         return null;

@@ -36,7 +36,7 @@ public class serviceScore {
     public ScoreEntity saveScore(ScoreDTO score) {
 
         Optional<ScoreEntity> scoreEntity = scoreDAO.findById(score.getId());
-        if(scoreEntity.isPresent()) {
+        if(!scoreEntity.isPresent()) {
             return scoreDAO.save(ScoreMapper.INSTANCE.mapScoreDTOToScoreEntity(score));
         }
 

@@ -37,7 +37,7 @@ public class serviceStudent {
     public StudentEntity saveStudent(StudentsDTO student) {
         Optional<StudentEntity> optional = studentsDAO.findById((student.getIdcard()));
 
-        if(optional.isPresent()){
+        if(!optional.isPresent()){
         return studentsDAO.save(StudentMapper.INSTANCE.mapStudentDTOToEntity(student));
         }
         return null;
