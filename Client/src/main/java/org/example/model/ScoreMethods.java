@@ -1,5 +1,6 @@
-package org.example;
+package org.example.model;
 
+import org.example.SessionFactory;
 import org.hibernate.Session;
 
 import java.util.List;

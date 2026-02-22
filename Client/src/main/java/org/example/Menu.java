@@ -1,11 +1,10 @@
 package org.example;
 
+import org.example.model.*;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import java.sql.SQLOutput;
 import java.util.List;
-import java.util.Scanner;
 
 
 public class Menu {

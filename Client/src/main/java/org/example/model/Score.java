@@ -1,6 +1,7 @@
-package org.example;
+package org.example.model;
 
 import jakarta.persistence.*;
+import org.example.SessionFactory;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 

@@ -1,10 +1,10 @@
-package org.example;
+package org.example.model;
 
 import jakarta.persistence.*;
+import org.example.SessionFactory;
 import org.hibernate.Session;
 
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity

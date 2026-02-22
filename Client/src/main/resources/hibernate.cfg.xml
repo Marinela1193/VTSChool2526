@@ -9,12 +9,12 @@
       <property name="connection.username">postgres.hejarhufogoypiwzcfsk</property>
       <property name="connection.password">ukn5JR0n8QahbiPe</property>
       <property name="default_schema">_da_vtschool_2526</property>
-      <mapping class="org.example.Student"/>
-      <mapping class="org.example.Cours"/>
-      <mapping class="org.example.Enrollment"/>
-      <mapping class="org.example.Score"/>
-      <mapping class="org.example.SubjectCours"/>
-      <mapping class="org.example.Subject"/>
+      <mapping class="org.example.model.Student"/>
+      <mapping class="org.example.model.Cours"/>
+      <mapping class="org.example.model.Enrollment"/>
+      <mapping class="org.example.model.Score"/>
+      <mapping class="org.example.model.SubjectCours"/>
+      <mapping class="org.example.model.Subject"/>
     <!-- DB schema will be updated if needed -->
     <!-- <property name="hibernate.hbm2ddl.auto">update</property> -->
   </session-factory>
