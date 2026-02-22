@@ -27,4 +27,12 @@ public class JSONMapper {
         }
     }
 
+    public static String mapToJSON(Object object) {
+        try{
+            return mapper.writeValueAsString(object);
+        }catch(Exception e){
+            throw new RuntimeException("Error mapping JSON response", e);
+        }
+    }
+
 }
