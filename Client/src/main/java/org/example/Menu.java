@@ -3,12 +3,7 @@ package org.example;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.time.LocalDate;
-import java.util.ArrayList;
+import java.sql.SQLOutput;
 import java.util.List;
 import java.util.Scanner;
 
@@ -28,8 +23,6 @@ public class Menu {
             helpScreen();
             return;
         }
-
-
 
         String arg = args[0];
         switch (arg) {
@@ -60,19 +53,12 @@ public class Menu {
                 break;
             case "-p":
             case "--print":
-                if(this.args.length == 3) {
-                    String idCard = this.args[1];
-                    int courseid  = Integer.parseInt(this.args[2]);
-                    String filename = this.args[3];
-                    createFileStudents(idCard,courseid);
-                }
                 if (this.args.length > 2) {
                     String idCard = this.args[1];
                     int courseid  = Integer.parseInt(this.args[2]);
                     printScores(idCard, courseid);
-
                 } else {
-                    System.err.println("Minimum two parameters required");
+                    System.err.println("Two parameters required");
                     helpScreen();
                 }
                 break;
@@ -86,13 +72,6 @@ public class Menu {
                     System.err.println("Two parameters required");
                     helpScreen();
                 }
-            case "-c":
-            case "--close":
-                if(this.args.length > 2) {
-                    forceClosure();
-                }else {
-                    closeYear();
-                }
                 break;
         }
     }
@@ -103,9 +82,8 @@ public class Menu {
         System.out.println("-h, --help: show this help");
         System.out.println("-a, --add {filename.xml}: add the students in the XML file to the database.");
         System.out.println("-e, --enroll {studentId} {courseId}: enroll a student in a course");
-        System.out.println("-p, --print {studentId} {courseId} [-f / --file]: show the scores of a student in a course");
+        System.out.println("-p, --print {studentId} {courseId}: show the scores of a student in a course");
         System.out.println("-q, --qualify {studentId} {courseId}: introduce the scores obtained by the student in the course.");
-        System.out.println("-c, --close [-f / --force]: will force to close an academic year");
 
     }
 
@@ -142,11 +120,7 @@ public class Menu {
 
                     }
 
-                    if (student.getPhone() == null){
-                        throw new RuntimeException("IDCARD:  " + student.getIdcard() + " does not have a phone number included, it is compulsory.");
-                    }
-
-                    if(!student.checkPhoneNumber()) {
+                    if (!student.checkPhoneNumber()) {
                         throw new RuntimeException("IDCARD:  " + student.getIdcard() + " has an invalid phone number");
 
                     }
@@ -169,9 +143,8 @@ public class Menu {
 
             //check that the IDCard is valid
             Student student = new Student();
-            student.setIdcard(idCard);
             if (!student.checkIdCard()) {
-                System.err.println("IDCARD:  " + idCard + " is invalid, it must have 8 characters.");
+                System.err.println("IDCARD:  " + idCard + " is invalid, it must have 8 characteres.");
                 return;
             }
             //check the IDCard exists
@@ -180,9 +153,6 @@ public class Menu {
                 return;
             }
 
-            /*if (student.getPhone() == null){
-                throw new RuntimeException("IDCARD:  " + student.getIdcard() + " does not have a phone number included, it is compulsory.");
-            }*/
             //check the IDCours exists
             Cours course = new Cours();
             if (!course.checkCourse(idCourse)) {
@@ -190,68 +160,11 @@ public class Menu {
                 return;
             }
 
-            List<Score> studentInfoList = student.studentInfo(idCard, idCourse);
-            if (studentInfoList.isEmpty()) {
-                System.out.println("No scores found for student " + idCard + " in course " + idCourse);
-            } else {
-                Score scores = new Score();
-                scores.printScores(studentInfoList);
-            }
 
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+            List<Score> studentInfoList = student.studentInfo(idCard);
+            Score score = new Score();
+            score.printScores(studentInfoList);
 
-    public static void createFileStudents(String idCard, int idCourse){
-
-        try (Session session = SessionFactory.getSessionFactory().openSession()) {
-
-            //check that the IDCard is valid
-            Student student = new Student();
-            student.setIdcard(idCard);
-            if (!student.checkIdCard()) {
-                System.err.println("IDCARD:  " + idCard + " is invalid, it must have 8 characters.");
-                return;
-            }
-            //check the IDCard exists
-            if (!student.existsId(idCard)) {
-                System.err.println("IDCARD:  " + idCard + " does not exist in the system");
-                return;
-            }
-
-            //if (student.getPhone() == null){
-                //throw new RuntimeException("IDCARD:  " + student.getIdcard() + " does not have a phone number included, it is compulsory.");
-            //}
-            //check the IDCours exists
-            Cours course = new Cours();
-            if (!course.checkCourse(idCourse)) {
-                System.err.println("IDCourse: " + idCourse + " does not exist in the system.");
-                return;
-            }
-
-            List<Score> studentInfoList = student.studentInfo(idCard, idCourse);
-            if (studentInfoList.isEmpty()) {
-                System.out.println("No scores found for student " + idCard + " in course " + idCourse);
-            } else {
-                Score scores = new Score();
-                scores.printScores(studentInfoList);
-
-
-                try {
-                    OutputStream file = new FileOutputStream("students.txt");
-                    for (Score s : studentInfoList) {
-                        //int character;
-                        //if ((character = value()) != -1) {
-                        file.write(student.toString().getBytes());
-                        //}
-                    }
-                } catch (FileNotFoundException e) {
-                    throw new RuntimeException(e);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
         }catch (Exception e) {
             e.printStackTrace();
         }
@@ -264,166 +177,113 @@ public class Menu {
         try (Session session = SessionFactory.getSessionFactory().openSession()) {
 
             //check that the IDCard is valid
-            Student student = new Student().getStudentByIdcard(idCard);
-            Cours course = new Cours().getCourseById(idCourse);
-
-            if (student == null) {
-                System.err.println("IDCARD: " + idCard + " does not exist in the system.");
+            Student student = new Student();
+            if (!student.checkIdCard()) {
+                System.err.println("IDCARD:  " + idCard + " is invalid, it must have 8 characteres.");
+                return;
+            }
+            //check the IDCard exists
+            if (!student.existsId(idCard)) {
+                System.err.println("IDCARD:  " + idCard + " does not exist in the system");
                 return;
             }
 
-            if (student.getPhone() == null){
-                throw new RuntimeException("IDCARD:  " + student.getIdcard() + " does not have a phone number included, it is compulsory.");
-            }
-
-            if (course == null) {
+            //check the IDCours exists
+            Cours course = new Cours();
+            if (!course.checkCourse(idCourse)) {
                 System.err.println("IDCourse: " + idCourse + " does not exist in the system.");
                 return;
             }
 
+            //check if student has completed the course
+            /*if (student.completedCourse(idCard, idCourse)) {
+                System.err.println("The student has already completed this course and cannot enroll again.");
+                return;
+            }*/
             //check table enrollments has id and course
-            Enrollment enrollmentNew = new Enrollment();
+            Enrollment enrollment = new Enrollment();
             Subject subject = new Subject();
             Score score = new Score();
             transaction = session.beginTransaction();
 
-            Enrollment enrollment = enrollmentNew.getEnrollment(session, idCard, idCourse);
-
-            if (enrollment == null)  {
+            if (!enrollment.checkEnrollment(idCard, idCourse)) {
                 System.err.println("IDCard: " + idCard + " does not exist in the Course: " + idCourse + " we will proceed to enroll the student in the first year");
 
-                enrollment = enrollmentNew.createEnrollment(session, student, course, 2025);
+                enrollment.createEnrollment(idCard, idCourse);
 
                 List<Subject> subjectsToEnroll = subject.getSubjectsFirstYear(idCourse);
 
                 for (Subject s : subjectsToEnroll) {
-                    score.createScore(session, enrollment, s);
-                    System.out.println("Score(s): " + subjectsToEnroll.size() + " created successfully");
-
+                    score.createScore();
                 }
             } else {
 
-                if(enrollment.getYear() == 2024 && subject.getSubjectsFailed(idCard).isEmpty()){
-                    System.out.println("The student has already passed the course, we cannot enroll again");
-                    return;
+                List<Subject> passedSubjects = subject.getSubjectsPassed(idCard);
+                int count = 0;
+                for (Subject s : passedSubjects) {
+                    count++;
                 }
-                /*  List<Subject> passedSubjects = subject.getSubjectsPassed(idCard);
-                if (passedSubjects.size() == 5 && enroll.getYear()==2024) {
-                    System.out.println("The student has already passed the course, we cannot enroll again");
+
+                if (count == 5) {
+                    System.out.println("The student has already passed the course");
                     return;
-                }*/
-                StringBuilder sb = new StringBuilder();
+                } else {
+                    List<Subject> failedSubjects = subject.getSubjectsFailed(idCard);
 
-                //System.out.println("The student " + idCard + " is already enrolled in course: " + idCourse + " ,we will proceed with failed and second year subjects");
-
-                List<Subject> secondYearSubjects = subject.getSubjectsSecondYear(idCourse);
-                for (Subject s : secondYearSubjects) {
-                    score.enrollInSubject(session, enrollment, s);
-                    sb.append(secondYearSubjects.size() + " score(s) created successfully\n");
-                }
-                List<Subject> failedSubjects = subject.getSubjectsFailed(idCard);
-                if(!failedSubjects.isEmpty()){
-                    sb.append("The student has pending subjects from the first year, we will enroll in them for the new course\n");
                     for (Subject s : failedSubjects) {
-                        score.enrollInSubject(session, enrollment, s);
-                        sb.append(secondYearSubjects.size() + " score(s) created successfully\n");
+                        score.createScore();
                     }
 
+                    List<Subject> secondYearSubjects = subject.getSubjectsSecondYear(idCourse);
+                    for (Subject s : secondYearSubjects) {
+                        score.createScore();
+                    }
                 }
-                sb.append("The student has been enrolled in the subjects failed and 2nd year subjects\n");
-
+                transaction.commit();
+                System.out.println("The student has been enrolled in the subjects failed and 2nd year subjects");
             }
-            transaction.commit();
-
-        } catch (Exception e){
+        } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
             }
             System.err.println("Error during enrollment: " + e.getMessage());
-            e.printStackTrace();
         }
+
     }
 
     public static void introScores (String idCard,int idCourse){
 
-        Student student = new Student();
-        student.setIdcard(idCard);
-        if (!student.checkIdCard()) {
-            System.err.println("IDCARD:  " + idCard + " is invalid, it must have 8 characteres.");
-            return;
-        }
-        //check the IDCard exists
-        if (!student.existsId(idCard)) {
-            System.err.println("IDCARD:  " + idCard + " does not exist in the system");
-        }
-
-        //check the IDCours exists
-        Cours course = new Cours();
-        if (!course.checkCourse(idCourse)) {
-            System.err.println("IDCourse: " + idCourse + " does not exist in the system.");
-        }
-
-        try (Session session = SessionFactory.getSessionFactory().openSession()) {
-//            Scanner sc = new Scanner(System.in);
-
-            //We create a list of the subjects this student is enrolled and
-            Score score = new Score();
-            List<Score> scoresStudent = score.getScores(idCard,idCourse);
-
-            if(scoresStudent.isEmpty()){
-                System.out.println("The student has no scores to be updated");
+            Student student = new Student();
+            if (!student.checkIdCard()) {
+                System.err.println("IDCARD:  " + idCard + " is invalid, it must have 8 characteres.");
                 return;
             }
-            score.addScores(session, scoresStudent);
+            //check the IDCard exists
+            if (!student.existsId(idCard)) {
+                System.err.println("IDCARD:  " + idCard + " does not exist in the system");
+            }
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+            //check the IDCours exists
+            Cours course = new Cours();
+            if (!course.checkCourse(idCourse)) {
+                System.err.println("IDCourse: " + idCourse + " does not exist in the system.");
+            }
 
-    public static void closeYear(){
-        try(Session session = SessionFactory.getSessionFactory().openSession()) {
-            int month = LocalDate.now().getMonthValue();
-            Score score = new Score();
+            try (Session session = SessionFactory.getSessionFactory().openSession()) {
+//            Scanner sc = new Scanner(System.in);
 
-            switch (month) {
-                case 1, 2, 3, 4, 5, 6, 10, 11, 12:
-                    List<Score> scoreList = score.getAllScores();
+                //We create a list of the subjects this student is enrolled and
+                ScoreMethods scoreMethods = new ScoreMethods();
+                List<Score> scoresStudent = scoreMethods.getScores(idCard);
+                scoreMethods.addScores(session, scoresStudent);
 
-                    score.addScores(session, scoreList);
-                    System.out.println("All pending subjects have been scored. Year closed.");
-                    break;
-                case 7:
-                case 8:
-                case 9:
-                    System.err.println("You cannot close the year during this month");
-                    break;
+                System.out.println("All scores updated successfully.");
+
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
-    }
-
-    public static void forceClosure(){
-        try(Session session = SessionFactory.getSessionFactory().openSession()) {
-            System.out.println("You are forcing the closure of the year");
-
-            Score score = new Score();
-
-            List<Score> scoreList = score.getAllScores();
-            score.addScores(session, scoreList);
-
-            System.out.println("All pending subjects have been scored. Year closed.");
-
-        }
-    }
-
-    public void prueba () {
-
-        Score score = new Score();
-        List<Score> scoreList = score.getAllScores();
-        for(Score s : scoreList){
-            System.out.println(s.toString());
-        }
-    }
 }
+
 
 

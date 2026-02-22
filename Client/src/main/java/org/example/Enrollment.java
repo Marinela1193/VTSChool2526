@@ -2,10 +2,8 @@ package org.example;
 
 import jakarta.persistence.*;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 
 import java.util.LinkedHashSet;
-import java.util.Scanner;
 import java.util.Set;
 
 @Entity
@@ -73,37 +71,34 @@ public class Enrollment {
     public boolean checkEnrollment(String idCard, int courseCode) {
         try(Session session = SessionFactory.getSessionFactory().openSession()) {
             Long count = session.createQuery(
-                            "SELECT COUNT(e) FROM Enrollment e " +
-                                    "WHERE e.student.idcard = :studentId " +
-                                    "AND e.course.id = :courseId",
-                            Long.class
-                    )
-                    .setParameter("studentId", idCard)
-                    .setParameter("courseId", courseCode)
+                    "FROM Enrollment e " +
+                            "WHERE e.student.idcard = :studentId " +
+                            "AND e.course.id = :courseId",
+                    Long.class
+            )
+            .setParameter("studentId", idCard)
+            .setParameter("courseId", courseCode)
                     .uniqueResult();
 
-            return count != null && count > 0;
+           return count != null && count > 0;
 
         }
     }
 
-    public Enrollment createEnrollment(Session session, Student student, Cours course, int year) {
+    public void createEnrollment(String idCard, int courseCode) {
+        try(Session session = SessionFactory.getSessionFactory().openSession()) {
 
             Enrollment enrollment = new Enrollment();
+            //in order to introduce the student in the first year
+            //we create the course c in order to assign the year 1
+            Cours c = session.find(Cours.class, course);
             enrollment.setStudent(student);
-            enrollment.setCourse(course);
-            enrollment.setYear(year);
+            enrollment.setCourse(c);
+            enrollment.setYear(2025);
+            //we add the student in all courses of 1 year
+
             session.persist(enrollment);
-            return enrollment;
+        }
     }
 
-    public Enrollment getEnrollment(Session session, String idCard, int courseId) {
-        return session.createQuery(
-                        "FROM Enrollment e " +
-                                "WHERE e.student.idcard = :studentId AND e.course.id = :courseId",
-                        Enrollment.class)
-                .setParameter("studentId", idCard)
-                .setParameter("courseId", courseId)
-                .uniqueResult();
-    }
 }

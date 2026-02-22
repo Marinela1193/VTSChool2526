@@ -2,8 +2,8 @@ package org.example;
 
 import jakarta.persistence.*;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 
-import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -26,9 +26,6 @@ public class Student {
 
     @Column(name = "email", length = 100)
     private String email;
-
-    @Column (name = "birthdate")
-    private Date birthdate;
 
     @OneToMany(mappedBy = "student")
     private Set<Enrollment> enrollments = new LinkedHashSet<>();
@@ -73,10 +70,6 @@ public class Student {
         this.email = email;
     }
 
-    public void setBirthdate(Date birthdate) { this.birthdate = birthdate; }
-
-    public Date getBirthdate() { return birthdate; }
-
     public Set<Enrollment> getEnrollments() {
         return enrollments;
     }
@@ -112,7 +105,7 @@ public class Student {
     public Student getStudentByIdcard(String idCard) {
         try(Session session = SessionFactory.getSessionFactory().openSession()){
             Query myQuery = session.createQuery("SELECT s FROM Student s WHERE s.idcard = :idCard");
-            myQuery.setParameter("idCard", idCard);
+            myQuery.setParameter("idCard", idcard);
             return Student.class.cast(myQuery.getSingleResult());
         }catch (Exception e) {
             System.out.println(e.getMessage());
@@ -151,7 +144,7 @@ public class Student {
     }
 
     public boolean checkIdCard(){
-        return this.idcard.length() == 8;
+      return this.idcard.length() == 8;
     }
 
     public boolean completedCourse(String idCard, int courseId) {
@@ -181,20 +174,18 @@ public class Student {
         }
     }
 
-    public List<Score> studentInfo(String idCard, int courseID){
+    public List<Score> studentInfo(String idCard){
         try(Session session = SessionFactory.getSessionFactory().openSession()){
             return session.createQuery(
                             "SELECT sc " +
                                     "FROM Score sc " +
-                                    "JOIN FETCH sc.enrollment e " +
-                                    "JOIN FETCH e.student st " +
-                                    "JOIN FETCH sc.subject sub " +
+                                    "JOIN sc.enrollment e " +
+                                    "JOIN e.student st " +
+                                    "JOIN sc.subject sub " +
                                     "WHERE st.idcard = :studentId " +
-                                    "AND e.course.id = :courseId " +
                                     "ORDER BY e.year DESC",
                             Score.class
                     ).setParameter("studentId", idCard)
-                    .setParameter("courseId", courseID)
                     .getResultList();
         } catch (RuntimeException e) {
             throw new RuntimeException(e);
