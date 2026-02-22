@@ -1,0 +1,20 @@
+<vtinstitute>
+    <students>
+        <student>
+            <idcard>19889233</idcard>
+            <firstname>Mari</firstname>
+            <lastname>García</lastname>
+            <email>mgarcia@iesmarenostrum.com</email>
+            <phone>616116611</phone>
+            <birthdate>11.08.1990</birthdate>
+        </student>
+        <student>
+            <idcard>19805933</idcard>
+            <firstname>Antonio</firstname>
+            <lastname>Luque</lastname>
+            <email>mgarcia@iesmarenostrum.com</email>
+            <phone>616116611</phone>
+            <birthdate>11.08.1990</birthdate>
+        </student>
+    </students>
+</vtinstitute>
