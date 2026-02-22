@@ -7,7 +7,7 @@ import org.hibernate.Transaction;
 import java.util.List;
 
 
-public class Menu {
+/*public class Menu {
 
     private String[] args;
 
@@ -92,7 +92,7 @@ public class Menu {
             StudentXmlParser myXMLStudentsHandler = new StudentXmlParser();
 
             //we declare a list were the students will be added
-            List<Student> studentsXML = myXMLStudentsHandler.read(filename);
+            List<StudentDTO> studentsXML = myXMLStudentsHandler.read(filename);
 
             addListToDataBase(studentsXML);
 
@@ -101,29 +101,29 @@ public class Menu {
         }
     }
 
-    public static void addListToDataBase(List<Student> studentList) throws RuntimeException {
+    public static void addListToDataBase(List<StudentDTO> studentDTOList) throws RuntimeException {
 
         try(Session session = SessionFactory.getSessionFactory().openSession()) {
 
             Transaction transaction = session.beginTransaction();
 
             try {
-                for (Student student : studentList) {
-                    System.out.println(student);
-                    if (student.existsId(student.getIdcard())) {
-                        throw new RuntimeException("IDCARD:  " + student.getIdcard() + " is already in the system.");
+                for (StudentDTO studentDTO : studentDTOList) {
+                    System.out.println(studentDTO);
+                    if (studentDTO.existsId(studentDTO.getIdcard())) {
+                        throw new RuntimeException("IDCARD:  " + studentDTO.getIdcard() + " is already in the system.");
                     }
 
-                    if (!student.checkEmail()) {
-                        throw new RuntimeException("IDCARD:  " + student.getIdcard() + " has an invalid email");
+                    if (!studentDTO.checkEmail()) {
+                        throw new RuntimeException("IDCARD:  " + studentDTO.getIdcard() + " has an invalid email");
 
                     }
 
-                    if (!student.checkPhoneNumber()) {
-                        throw new RuntimeException("IDCARD:  " + student.getIdcard() + " has an invalid phone number");
+                    if (!studentDTO.checkPhoneNumber()) {
+                        throw new RuntimeException("IDCARD:  " + studentDTO.getIdcard() + " has an invalid phone number");
 
                     }
-                    session.persist(student);
+                    session.persist(studentDTO);
                 }
             }catch (Exception e) {
                 transaction.rollback();
@@ -132,7 +132,7 @@ public class Menu {
             }
             transaction.commit();
 
-            System.out.println(studentList.size() + " Student(s) added correctly");
+            System.out.println(studentDTOList.size() + " StudentDTO(s) added correctly");
         }
     }
 
@@ -141,27 +141,27 @@ public class Menu {
         try (Session session = SessionFactory.getSessionFactory().openSession()) {
 
             //check that the IDCard is valid
-            Student student = new Student();
-            if (!student.checkIdCard()) {
+            StudentDTO studentDTO = new StudentDTO();
+            if (!studentDTO.checkIdCard()) {
                 System.err.println("IDCARD:  " + idCard + " is invalid, it must have 8 characteres.");
                 return;
             }
             //check the IDCard exists
-            if (!student.existsId(idCard)) {
+            if (!studentDTO.existsId(idCard)) {
                 System.err.println("IDCARD:  " + idCard + " does not exist in the system");
                 return;
             }
 
             //check the IDCours exists
-            Cours course = new Cours();
+            CourseDTO course = new CourseDTO();
             if (!course.checkCourse(idCourse)) {
                 System.err.println("IDCourse: " + idCourse + " does not exist in the system.");
                 return;
             }
 
 
-            List<Score> studentInfoList = student.studentInfo(idCard);
-            Score score = new Score();
+            List<ScoreDTO> studentInfoList = studentDTO.studentInfo(idCard);
+            ScoreDTO score = new ScoreDTO();
             score.printScores(studentInfoList);
 
         }catch (Exception e) {
@@ -172,74 +172,74 @@ public class Menu {
     public static void enrollStudent(String idCard, int idCourse) {
         /*The -e / --enroll option will enroll an existing student (idCard must be provided)
         in an existing course. */
-        Transaction transaction = null;
+        /*Transaction transaction = null;
         try (Session session = SessionFactory.getSessionFactory().openSession()) {
 
             //check that the IDCard is valid
-            Student student = new Student();
-            if (!student.checkIdCard()) {
+            StudentDTO studentDTO = new StudentDTO();
+            if (!studentDTO.checkIdCard()) {
                 System.err.println("IDCARD:  " + idCard + " is invalid, it must have 8 characteres.");
                 return;
             }
             //check the IDCard exists
-            if (!student.existsId(idCard)) {
+            if (!studentDTO.existsId(idCard)) {
                 System.err.println("IDCARD:  " + idCard + " does not exist in the system");
                 return;
             }
 
             //check the IDCours exists
-            Cours course = new Cours();
+            CourseDTO course = new CourseDTO();
             if (!course.checkCourse(idCourse)) {
                 System.err.println("IDCourse: " + idCourse + " does not exist in the system.");
                 return;
             }
 
-            //check if student has completed the course
-            /*if (student.completedCourse(idCard, idCourse)) {
-                System.err.println("The student has already completed this course and cannot enroll again.");
+            //check if studentDTO has completed the course
+            /*if (studentDTO.completedCourse(idCard, idCourse)) {
+                System.err.println("The studentDTO has already completed this course and cannot enroll again.");
                 return;
             }*/
             //check table enrollments has id and course
-            Enrollment enrollment = new Enrollment();
-            Subject subject = new Subject();
-            Score score = new Score();
+           /* EnrollmentDTO enrollment = new EnrollmentDTO();
+            SubjectDTO subject = new SubjectDTO();
+            ScoreDTO score = new ScoreDTO();
             transaction = session.beginTransaction();
 
             if (!enrollment.checkEnrollment(idCard, idCourse)) {
-                System.err.println("IDCard: " + idCard + " does not exist in the Course: " + idCourse + " we will proceed to enroll the student in the first year");
+                System.err.println("IDCard: " + idCard + " does not exist in the Course: " + idCourse + " we will proceed to enroll the studentDTO in the first year");
 
                 enrollment.createEnrollment(idCard, idCourse);
 
-                List<Subject> subjectsToEnroll = subject.getSubjectsFirstYear(idCourse);
+                List<SubjectDTO> subjectsToEnroll = subject.getSubjectsFirstYear(idCourse);
 
-                for (Subject s : subjectsToEnroll) {
+                for (SubjectDTO s : subjectsToEnroll) {
                     score.createScore();
                 }
             } else {
 
-                List<Subject> passedSubjects = subject.getSubjectsPassed(idCard);
+                List<SubjectDTO> passedSubjects = subject.getSubjectsPassed(idCard);
                 int count = 0;
-                for (Subject s : passedSubjects) {
+                for (SubjectDTO s : passedSubjects) {
                     count++;
                 }
 
                 if (count == 5) {
-                    System.out.println("The student has already passed the course");
+                    System.out.println("The studentDTO has already passed the course");
                     return;
                 } else {
-                    List<Subject> failedSubjects = subject.getSubjectsFailed(idCard);
+                    List<SubjectDTO> failedSubjects = subject.getSubjectsFailed(idCard);
 
-                    for (Subject s : failedSubjects) {
+                    for (SubjectDTO s : failedSubjects) {
                         score.createScore();
                     }
 
-                    List<Subject> secondYearSubjects = subject.getSubjectsSecondYear(idCourse);
-                    for (Subject s : secondYearSubjects) {
+                    List<SubjectDTO> secondYearSubjects = subject.getSubjectsSecondYear(idCourse);
+                    for (SubjectDTO s : secondYearSubjects) {
                         score.createScore();
                     }
                 }
                 transaction.commit();
-                System.out.println("The student has been enrolled in the subjects failed and 2nd year subjects");
+                System.out.println("The studentDTO has been enrolled in the subjects failed and 2nd year subjects");
             }
         } catch (Exception e) {
             if (transaction != null) {
@@ -252,18 +252,18 @@ public class Menu {
 
     public static void introScores (String idCard,int idCourse){
 
-            Student student = new Student();
-            if (!student.checkIdCard()) {
+            StudentDTO studentDTO = new StudentDTO();
+            if (!studentDTO.checkIdCard()) {
                 System.err.println("IDCARD:  " + idCard + " is invalid, it must have 8 characteres.");
                 return;
             }
             //check the IDCard exists
-            if (!student.existsId(idCard)) {
+            if (!studentDTO.existsId(idCard)) {
                 System.err.println("IDCARD:  " + idCard + " does not exist in the system");
             }
 
             //check the IDCours exists
-            Cours course = new Cours();
+            CourseDTO course = new CourseDTO();
             if (!course.checkCourse(idCourse)) {
                 System.err.println("IDCourse: " + idCourse + " does not exist in the system.");
             }
@@ -271,9 +271,9 @@ public class Menu {
             try (Session session = SessionFactory.getSessionFactory().openSession()) {
 //            Scanner sc = new Scanner(System.in);
 
-                //We create a list of the subjects this student is enrolled and
+                //We create a list of the subjects this studentDTO is enrolled and
                 ScoreMethods scoreMethods = new ScoreMethods();
-                List<Score> scoresStudent = scoreMethods.getScores(idCard);
+                List<ScoreDTO> scoresStudent = scoreMethods.getScores(idCard);
                 scoreMethods.addScores(session, scoresStudent);
 
                 System.out.println("All scores updated successfully.");
@@ -282,7 +282,7 @@ public class Menu {
                 e.printStackTrace();
             }
         }
-}
+}*/
 
 
 
