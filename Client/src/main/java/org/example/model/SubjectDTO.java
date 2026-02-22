@@ -1,5 +1,6 @@
 package org.example.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import org.example.SessionFactory;
 import org.hibernate.Session;
@@ -8,34 +9,33 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-@Entity
-@Table(name = "subjects", schema = "_da_vtschool_2526")
-public class Subject {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "code", nullable = false)
-    private Integer id;
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class SubjectDTO {
 
-    @Column(name = "name", length = 50)
-    private String name;
+    int id;
+    String  name;
+    int year;
+    int hours;
+    ScoreDTO score;
+    SubjectCourseDTO subjectCourse;
 
-    @Column(name = "year")
-    private Integer year;
+    public SubjectDTO() {
+    }
 
-    @Column(name = "hours")
-    private Integer hours;
+    public SubjectDTO(int id, String name, int year, int hours, ScoreDTO score, SubjectCourseDTO subjectCourse) {
+        this.id = id;
+        this.name = name;
+        this.year = year;
+        this.hours = hours;
+        this.score = score;
+        this.subjectCourse = subjectCourse;
+    }
 
-    @OneToMany(mappedBy = "subject")
-    private Set<Score> scores = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "subject")
-    private Set<SubjectCours> subjectCourses = new LinkedHashSet<>();
-
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -47,41 +47,41 @@ public class Subject {
         this.name = name;
     }
 
-    public Integer getYear() {
+    public int getYear() {
         return year;
     }
 
-    public void setYear(Integer year) {
+    public void setYear(int year) {
         this.year = year;
     }
 
-    public Integer getHours() {
+    public int getHours() {
         return hours;
     }
 
-    public void setHours(Integer hours) {
+    public void setHours(int hours) {
         this.hours = hours;
     }
 
-    public Set<Score> getScores() {
-        return scores;
+    public ScoreDTO getScore() {
+        return score;
     }
 
-    public void setScores(Set<Score> scores) {
-        this.scores = scores;
+    public void setScore(ScoreDTO score) {
+        this.score = score;
     }
 
-    public Set<SubjectCours> getSubjectCourses() {
-        return subjectCourses;
+    public SubjectCourseDTO getSubjectCourse() {
+        return subjectCourse;
     }
 
-    public void setSubjectCourses(Set<SubjectCours> subjectCourses) {
-        this.subjectCourses = subjectCourses;
+    public void setSubjectCourse(SubjectCourseDTO subjectCourse) {
+        this.subjectCourse = subjectCourse;
     }
 
-    public List<Subject> getSubjectsFirstYear(int courseId) {
+    /*public List<SubjectDTO> getSubjectsFirstYear(int courseId) {
         try (Session session = SessionFactory.getSessionFactory().openSession()) {
-            return session.createQuery("SELECT sc.subject FROM SubjectCours sc WHERE sc.course.id = :courseId AND sc.subject.year = 1", Subject.class)
+            return session.createQuery("SELECT sc.subject FROM SubjectCourseDTO sc WHERE sc.course.id = :courseId AND sc.subject.year = 1", SubjectDTO.class)
             .setParameter("courseId", courseId)
                     .getResultList();
         }catch (Exception e) {
@@ -90,12 +90,12 @@ public class Subject {
         }
     }
 
-    public List<Subject> getSubjectsSecondYear(int courseId) {
+    public List<SubjectDTO> getSubjectsSecondYear(int courseId) {
         try (Session session = SessionFactory.getSessionFactory().openSession()) {
             return session.createQuery("SELECT sc.subject " +
-                    "FROM SubjectCours sc " +
+                    "FROM SubjectCourseDTO sc " +
                     "WHERE sc.course.id = :courseId " +
-                    "AND sc.subject.year = 2", Subject.class)
+                    "AND sc.subject.year = 2", SubjectDTO.class)
                     .setParameter("courseId", courseId)
                     .getResultList();
         }catch (Exception e) {
@@ -104,41 +104,41 @@ public class Subject {
         }
     }
 
-    public List<Subject> getSubjectsFailed(String idCard) {
+    public List<SubjectDTO> getSubjectsFailed(String idCard) {
         try (Session session = SessionFactory.getSessionFactory().openSession()) {
             return  session.createNativeQuery(
                     "SELECT * FROM subjectsPending_mps_2526(:studentId)"
             ).setParameter("studentId", idCard)
-                    .addEntity(Subject.class)
+                    .addEntity(SubjectDTO.class)
                     .getResultList();
         }
     }
 
-    public List<Subject> getSubjectsPassed(String idCard) {
+    public List<SubjectDTO> getSubjectsPassed(String idCard) {
         try (Session session = SessionFactory.getSessionFactory().openSession()) {
             return  session.createNativeQuery(
                             "SELECT * FROM subjectsPassed_mps_2526(:studentId)"
                     ).setParameter("studentId", idCard)
-                    .addEntity(Subject.class)
+                    .addEntity(SubjectDTO.class)
                     .getResultList();
         }
     }
 
-    public List<Subject> subjectsStudentIsEnrolled(String idCard) {
+    public List<SubjectDTO> subjectsStudentIsEnrolled(String idCard) {
         try (Session session = SessionFactory.getSessionFactory().openSession()) {
             return session.createQuery(
                             "SELECT sub " +
-                                    "FROM Subject sub " +
-                                    "JOIN sub.scores s " +
+                                    "FROM SubjectDTO sub " +
+                                    "JOIN sub.scoreDTOS s " +
                                     "JOIN s.enrollment e " +
                                     "JOIN e.student st " +
                                     "WHERE st.idcard = :studentId",
-                            Subject.class
+                            SubjectDTO.class
                     ).setParameter("studentId", idCard)
                     .getResultList();
         }catch (Exception e) {
             System.out.println(e.getMessage());
             return null;
         }
-    }
+    }*/
 }

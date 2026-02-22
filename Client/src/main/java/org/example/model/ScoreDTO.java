@@ -1,5 +1,6 @@
 package org.example.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import org.example.SessionFactory;
 import org.hibernate.Session;
@@ -7,65 +8,63 @@ import org.hibernate.Transaction;
 
 import java.util.List;
 
-@Entity
-@Table(name = "scores", schema = "_da_vtschool_2526")
-public class Score {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "code", nullable = false)
-    private Integer id;
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class ScoreDTO {
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "enrollment_id", nullable = false)
-    private Enrollment enrollment;
+    int id;
+    EnrollmentDTO enrollment;
+    SubjectDTO subject;
+    int score;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "subject_id", nullable = false)
-    private Subject subject;
-
-    @Column(name = "score")
-    private Integer score;
-
-    public Integer getId() {
-        return id;
+    public ScoreDTO() {
     }
 
-    public void setId(Integer id) {
+    public ScoreDTO(int id, EnrollmentDTO enrollment, SubjectDTO subject, int score) {
         this.id = id;
-    }
-
-    public Enrollment getEnrollment() {
-        return enrollment;
-    }
-
-    public void setEnrollment(Enrollment enrollment) {
         this.enrollment = enrollment;
-    }
-
-    public Subject getSubject() {
-        return subject;
-    }
-
-    public void setSubject(Subject subject) {
         this.subject = subject;
-    }
-
-    public Integer getScore() {
-        return score;
-    }
-
-    public void setScore(Integer score) {
         this.score = score;
     }
 
-    public void createScore() {
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public EnrollmentDTO getEnrollment() {
+        return enrollment;
+    }
+
+    public void setEnrollment(EnrollmentDTO enrollment) {
+        this.enrollment = enrollment;
+    }
+
+    public SubjectDTO getSubject() {
+        return subject;
+    }
+
+    public void setSubject(SubjectDTO subject) {
+        this.subject = subject;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+    /*public void createScore() {
         Transaction transaction = null;
         try (Session session = SessionFactory.getSessionFactory().openSession()) {
-            Score score = new Score();
-            score.setEnrollment(enrollment);
-            score.setSubject(subject);
-            score.setScore(null);
-            session.persist(score);
+            ScoreDTO scoreDTO = new ScoreDTO();
+            scoreDTO.setEnrollment(enrollmentDTO);
+            scoreDTO.setSubject(subject);
+            scoreDTO.setScore(null);
+            session.persist(scoreDTO);
             transaction.commit();
         }catch (Exception e) {
             if (transaction != null) {
@@ -75,12 +74,12 @@ public class Score {
         }
     }
 
-    public void printScores(List<Score> scores){
+    public void printScores(List<ScoreDTO> scoreDTOS){
         Transaction transaction = null;
         try (Session session = SessionFactory.getSessionFactory().openSession()) {
-            System.out.println("Year      Subjets                            Score");
+            System.out.println("Year      Subjets                            ScoreDTO");
             System.out.println("---------------------------------------------------");
-            for (Score s : scores) {
+            for (ScoreDTO s : scoreDTOS) {
                 int year = s.getEnrollment().getYear();
                 String subject = s.getSubject().getName();
                 int score = s.getScore();
@@ -92,7 +91,7 @@ public class Score {
             transaction.rollback();
             e.printStackTrace();
         }
-    }
+    }*/
 
 
 }

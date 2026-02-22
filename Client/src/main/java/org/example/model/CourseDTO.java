@@ -1,5 +1,6 @@
 package org.example.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import org.example.SessionFactory;
 import org.hibernate.Session;
@@ -7,28 +8,25 @@ import org.hibernate.Session;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-@Entity
-@Table(name = "courses", schema = "_da_vtschool_2526")
-public class Cours {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "code", nullable = false)
-    private Integer id;
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class CourseDTO {
 
-    @Column(name = "name", nullable = false, length = 90)
-    private String name;
+    int id;
+    String name;
 
-    @OneToMany(mappedBy = "course")
-    private Set<Enrollment> enrollments = new LinkedHashSet<>();
+    public CourseDTO() {
+    }
 
-    @OneToMany(mappedBy = "course")
-    private Set<SubjectCours> subjectCourses = new LinkedHashSet<>();
+    public CourseDTO(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -40,28 +38,12 @@ public class Cours {
         this.name = name;
     }
 
-    public Set<Enrollment> getEnrollments() {
-        return enrollments;
-    }
-
-    public void setEnrollments(Set<Enrollment> enrollments) {
-        this.enrollments = enrollments;
-    }
-
-    public Set<SubjectCours> getSubjectCourses() {
-        return subjectCourses;
-    }
-
-    public void setSubjectCourses(Set<SubjectCours> subjectCourses) {
-        this.subjectCourses = subjectCourses;
-    }
-
-    public boolean checkCourse(int coursCode) {
+    /*public boolean checkCourse(int coursCode) {
         try (Session session = SessionFactory.getSessionFactory().openSession()) {
 
             Long count = session.createQuery(
                             "SELECT COUNT(c) " +
-                                    "FROM Cours c " +
+                                    "FROM CourseDTO c " +
                                     "WHERE c.id = :code", Long.class)
                     .setParameter("code", coursCode)
                     .uniqueResult();
@@ -77,7 +59,7 @@ public class Cours {
         try (Session session = SessionFactory.getSessionFactory().openSession()) {
             Long count = session.createQuery(
                             "SELECT COUNT(sc.subject) " +
-                                    "FROM SubjectCours sc " +
+                                    "FROM SubjectCourseDTO sc " +
                                     "WHERE sc.course.id = :courseId", Long.class)
                     .setParameter("courseId", courseId)
                     .uniqueResult();
@@ -87,6 +69,6 @@ public class Cours {
             System.err.println("Error getting total subjects: " + e.getMessage());
             return 0;
         }
-    }
+    }*/
 
 }
