@@ -1,4 +1,4 @@
-package org.example;
+/*package org.example;
 
 import org.hibernate.cfg.Configuration;
 
@@ -13,4 +13,4 @@ public class SessionFactory {
         }
         return sessionFactory;
     }
-}
+}*/
