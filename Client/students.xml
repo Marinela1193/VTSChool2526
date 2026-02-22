@@ -1,11 +1,11 @@
 <vtinstitute>
-    <students>
-        <student>
+    <studentDTOS>
+        <studentDTO>
             <idcard>12458780</idcard>
             <firstname>Marisa</firstname>
             <lastname>García</lastname>
             <email>jrgarcia@iesmarenostrum.com</email>
             <phone>616116611</phone>
-        </student>
-    </students>
+        </studentDTO>
+    </studentDTOS>
 </vtinstitute>
