@@ -9,15 +9,15 @@ import java.util.Scanner;
 public class ScoreMethods {
 
     //method to look for the student's scores by id
-    public List<Score> getScores(String idCard) {
+    public List<ScoreDTO> getScores(String idCard) {
         try (Session session = SessionFactory.getSessionFactory().openSession()) {
             return session.createQuery(
                             "SELECT sc " +
-                                    "FROM Score sc " +
+                                    "FROM ScoreDTO sc " +
                                     "JOIN sc.enrollment e " +
                                     "JOIN e.student st " +
                                     "WHERE sc.score IS NULL AND st.idcard = :studentId",
-                            Score.class
+                            ScoreDTO.class
                     ).setParameter("studentId", idCard)
                     .getResultList();
         }
@@ -35,18 +35,18 @@ public class ScoreMethods {
         return value;
     }
 
-    public void addScores(Session session, List<Score> scores) {
+    public void addScores(Session session, List<ScoreDTO> scoreDTOS) {
         Scanner sc = new Scanner(System.in);
 
         //transaccion declarar
-        for (Score score : scores) {
-            Subject s = score.getSubject();
+        for (ScoreDTO scoreDTO : scoreDTOS) {
+            SubjectDTO s = scoreDTO.getSubject();
             int scoreValue;
 
             while(true) {
 
-                System.out.println("Introduce the score for subject: " + s.getName() + " (0-10 or 99 to skip)");
-                //we need to make sure first the score written goes between 0 - 10
+                System.out.println("Introduce the scoreDTO for subject: " + s.getName() + " (0-10 or 99 to skip)");
+                //we need to make sure first the scoreDTO written goes between 0 - 10
                 scoreValue = sc.nextInt();
 
                 int checkValue = this.checkScorevalue(scoreValue);
@@ -58,9 +58,9 @@ public class ScoreMethods {
                     break;
                 }
 
-                score.setScore(scoreValue);
-                session.merge(score);
-                System.out.println("Score for subject " + s.getName() + " updated correctly.");
+                scoreDTO.setScore(scoreValue);
+                session.merge(scoreDTO);
+                System.out.println("ScoreDTO for subject " + s.getName() + " updated correctly.");
                 break;
             }
         }
