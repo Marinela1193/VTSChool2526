@@ -8,6 +8,7 @@ import org.example.model.StudentDTO;
 import org.hibernate.Session;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.util.Set;
 
 
@@ -16,8 +17,38 @@ public class App {
 
     RestAPIConnection api = new RestAPIConnection();
 
-    HttpResponse response = api.getRequest(ENDPOINTS.STUDENTS);
-    Set<StudentDTO> students = JSONMapper.mapJSONArray(response.getBody(), StudentDTO.class);
+    HttpResponse response;
+    StudentDTO studentDTO = new StudentDTO();
+    //create
+    response = api.postRequest(ENDPOINTS.STUDENTS+ ENDPOINTS.CREATE,JSONMapper.mapToJSON(studentDTO));
+    if(response.getStatusCode() == HttpURLConnection.HTTP_OK){
+        System.out.println("Student Created");
+    }
+
+    //get
+    response = api.getRequest(ENDPOINTS.STUDENTS + studentDTO.getIdcard());
+    if(response.getStatusCode() == HttpURLConnection.HTTP_OK){
+        System.out.println(JSONMapper.mapJSONObject(response.getBody(), StudentDTO.class));
+    }
+
+    //update
+    studentDTO.setEmail(response.getBody());
+   response = api.getRequest(ENDPOINTS.STUDENTS+studentDTO.getIdcard());
+   if(response.getStatusCode() == HttpURLConnection.HTTP_OK){
+       System.out.println(JSONMapper.mapJSONObject(response.getBody(), StudentDTO.class));
+       System.out.println("Student updated correctly");
+   }
+
+   //get
+   response = api.getRequest(ENDPOINTS.STUDENTS+studentDTO.getIdcard());
+   if(response.getStatusCode() == HttpURLConnection.HTTP_OK){
+       System.out.println(JSONMapper.mapJSONObject(response.getBody(), StudentDTO.class));
+   }
+
+
+
+
+    /*Set<StudentDTO> students = JSONMapper.mapJSONArray(response.getBody(), StudentDTO.class);
 
     for (StudentDTO student : students){
         System.out.println(student);
@@ -29,8 +60,8 @@ public class App {
     response = api.getRequest(ENDPOINTS.STUDENTS + "1486");
     System.out.println(JSONMapper.mapJSONObject(response.getBody(), StudentDTO.class));
 
-        /*Menu menu = new Menu(args);
-        menu.start();*/
+   /*Menu menu = new Menu(args);
+   menu.start();*/
 
     }
 }
