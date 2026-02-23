@@ -1,12 +1,7 @@
 package org.example.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.*;
-import org.example.SessionFactory;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 
-import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ScoreDTO {

@@ -1,4 +1,4 @@
-package org.example.model;
+/*package org.example.model;
 
 import org.example.SessionFactory;
 import org.hibernate.Session;
@@ -65,4 +65,4 @@ public class ScoreMethods {
             }
         }
     }
-}
+}*/

@@ -1,7 +1,6 @@
 package org.example.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.*;
 
 import javax.security.auth.Subject;
 

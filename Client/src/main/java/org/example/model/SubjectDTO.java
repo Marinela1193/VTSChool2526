@@ -1,13 +1,7 @@
 package org.example.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.*;
-import org.example.SessionFactory;
-import org.hibernate.Session;
 
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SubjectDTO {
