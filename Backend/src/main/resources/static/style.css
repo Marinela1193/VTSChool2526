@@ -1,0 +1,39 @@
+.vt-card {
+    background-color: #89CFF0;
+    width: 250px;
+    padding: 40px;
+    border-radius: 10px;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    margin: 50px auto;
+}
+
+.vt-card h1 {
+    color: #000000;
+    font-weight: bold;
+    font-size: 35px;
+    margin-bottom: 20px;
+}
+
+.vt-card .welcome-text {
+    color: #FFFFFF;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+.btn-container {
+    display: block;
+    background-color: #007BFF;
+    color: white;
+    padding: 15px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.btn-container:hover {
+    background-color: #0056b3;
+}

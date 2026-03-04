@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Enrollments</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+    <form th:action="@{/admin/enrollments}" method="post">
+        <h2>Enroll student</h2>
+        <div class="enroll-container" style="display: flex;">
+            <div>
+                <label><strong>Student</strong></label>
+                <select name="studentIdCard" size="10" required>
+                    <option th:each="s : ${students}" th:value="${s.idcard}"
+                            th:text="${s.lastname + ', ' + s.firstname}"></option>
+                </select>
+            </div>
+            <div>
+                <label><strong>Course</strong></label>
+                <select name="courseCode" size="10" required>
+                    <option th:each="c : ${courses}" th:value="${c.code}" th:text="${c.name}"></option>
+                </select>
+            </div>
+        </div>
+        <button type="submit">Enroll</button>
+    </form>
+</body>
+</html>
