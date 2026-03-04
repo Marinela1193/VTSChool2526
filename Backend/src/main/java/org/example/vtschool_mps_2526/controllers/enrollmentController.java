@@ -46,10 +46,9 @@ class enrollmentController {
 
        EnrollmentEntity enrollmentEntity = serviceEnrollment.saveEnrollment(enrollmentDTO);
        if(enrollmentEntity != null) {
-           return ResponseEntity.badRequest().build();
+           return ResponseEntity.ok().build();
        }
-       serviceEnrollment.saveEnrollment(enrollmentDTO);
-       return ResponseEntity.ok().build();
+       return ResponseEntity.badRequest().build();
     }
 
     @PutMapping("/update")
