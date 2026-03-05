@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+<div class="vt-card">
+    <form th:action="@{/student/update}" method="post">
+        <h1>Edit Profile</h1>
+
+        <label for="idcard"><strong>ID Card</strong></label>
+        <input type="text" id="idcard" name="idcard" class="input-field" th:value="${alumno.idcard}" readonly>
+
+        <label for="firstname"><strong>First Name</strong></label>
+        <input type="text" id="firstname" name="firstName" class="input-field" th:value="${alumno.firstname}">
+
+        <label for="lastname"><strong>Last Name:</strong></label>
+        <input type="text" id="lastname" name="lastName" class="input-field" th:value="${alumno.lastname}">
+        <hr>
+        <button type="submit" class="btn-container">Save Data</button>
+    </form>
+</div>
+</body>
+</html>

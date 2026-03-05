@@ -32,11 +32,17 @@ public class serviceScore {
         return score.isPresent() ?ScoreMapper.INSTANCE.mapScoreEntityToScoreDTO(score.get()):null;
     }
 
+//    public ScoreDTO getScoresByEmail(String email) {
+//        Optional<ScoreEntity> score = scoreDAO.findByEmail(email);
+//
+//        return score.isPresent() ?ScoreMapper.INSTANCE.mapScoreEntityToScoreDTO(score.get()):null;
+//    }
+
 
     public ScoreEntity saveScore(ScoreDTO score) {
 
         Optional<ScoreEntity> scoreEntity = scoreDAO.findById(score.getId());
-        if(!scoreEntity.isPresent()) {
+        if(scoreEntity.isPresent()) {
             return scoreDAO.save(ScoreMapper.INSTANCE.mapScoreDTOToScoreEntity(score));
         }
 

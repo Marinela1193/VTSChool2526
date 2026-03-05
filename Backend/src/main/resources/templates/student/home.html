@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>VT Institute</title>
+
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+<div class="vt-card">
+    <h1>Student</h1>
+    <p class="welcome-text">Welcome, <span th:text="${alumno.firstname}"></span></p>
+    <a th:href="@{/student/profile}" class="btn-container">Edit profile</a> <br/>
+    <a th:href="@{/student/scores}" class="btn-container">My scores</a>
+</div>
+</body>
+</html>

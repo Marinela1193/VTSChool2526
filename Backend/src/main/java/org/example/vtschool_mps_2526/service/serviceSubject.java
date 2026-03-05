@@ -34,7 +34,7 @@ public class serviceSubject {
     public SubjectEntity saveSubject(SubjectDTO subject) {
         Optional<SubjectEntity> subjectEntity = subjectDAO.findById(subject.getId());
 
-        if(!subjectEntity.isPresent()) {
+        if(subjectEntity.isPresent()) {
             return subjectDAO.save(SubjectMapper.INSTANCE.mapSubjectDTOToSubjectEntity(subject));
         }
         return null;

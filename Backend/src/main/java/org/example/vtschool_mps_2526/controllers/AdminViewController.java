@@ -15,21 +15,21 @@ class AdminViewController {
     serviceStudent serviceStudent;
     serviceCourse serviceCourse;
 
-    @GetMapping("/dashboard")
-    public String dashboard() {
-        return "admin/dashboard";
+    @GetMapping("/home")
+    public String home() {
+        return "admin/home";
     }
 
     @GetMapping("/enroll")
     public String showEnrollForm(Model model) {
         model.addAttribute("students", serviceStudent.getStudents());
         model.addAttribute("courses", serviceCourse.getCourses());
-        return "admin/enroll";
+        return "admin/enrollView";
     }
 
     @GetMapping("/qualify")
     public String showQualifyForm(Model model) {
         model.addAttribute("students", serviceStudent.getStudents());
-        return "admin/qualify";
+        return "admin/qualifyView";
     }
 }

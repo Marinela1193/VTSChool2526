@@ -38,7 +38,7 @@ public class serviceEnrollment {
      public EnrollmentEntity saveEnrollment(EnrollmentDTO enrollmentDTO) {
          Optional<EnrollmentEntity> enrollmentEntity = enrollmentDAO.findById(enrollmentDTO.getId());
 
-         if(!enrollmentEntity.isPresent()) {
+         if(enrollmentEntity.isPresent()) {
              return enrollmentDAO.save(EnrollmentMapper.INSTANCE.mapEnrollmentDTOToEnrollmentEntity(enrollmentDTO));
          }
          return null;

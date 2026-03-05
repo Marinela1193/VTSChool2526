@@ -1,18 +1,37 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>VT Institute</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+    <title>Login - VT Institute</title>
 
     <link rel="stylesheet" th:href="@{/style.css}">
 </head>
 <body>
-    <div class="vt-card">
-        <h1>VT Institute</h1>
-        <p class="welcome-text">Welcome, ADMIN</p>
-        <a th:href="@{/vt-institute/admin/enroll}" class="btn-container">Enroll student</a> <br/>
-        <a th:href="@{/vt-institute/admin/qualify}" class="btn-container">Qualify student</a>
+<div class="vt-card">
+    <h1>VT Institute</h1>
+    <p class="welcome-text">Sign in</p>
+
+    <form th:action="@{/index}" method="post">
+        <div class="form-group">
+            <label for="username">Username / Email</label>
+            <input type="text" id="username" name="username" class="input-field"
+                   placeholder="Enter your email" required>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password (IdCard)</label>
+            <input type="password" id="password" name="password" class="input-field"
+                   placeholder="Enter your IdCard" required>
+        </div>
+
+        <button type="submit" class="btn-container" style="width: 100%; border: none; cursor: pointer;">
+            LOGIN
+        </button>
+    </form>
+
+    <div th:if="${param.error}" class="error-msg">
+        Invalid credentials. Please try again.
     </div>
+</div>
 </body>
 </html>

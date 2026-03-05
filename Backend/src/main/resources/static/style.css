@@ -37,3 +37,18 @@
 .btn-container:hover {
     background-color: #0056b3;
 }
+
+.input-field {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-sizing: border-box; /* Importante para que no se salga del div */
+}
+
+.error-msg {
+    color: #d9534f;
+    margin-top: 15px;
+    font-weight: bold;
+    font-size: 14px;
+}

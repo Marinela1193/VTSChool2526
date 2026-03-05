@@ -9,14 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class ViewController {
-    @Autowired
-    serviceStudent serviceStudent;
 
     @GetMapping("/index")
-    public String login() { return "login"; }
-
-    /*@GetMapping("/admin/dashboard")
-    public String adminDashboard() { return "admin/dashboard"; }*/
+    public String login() { return "index"; }
 
 }
 
