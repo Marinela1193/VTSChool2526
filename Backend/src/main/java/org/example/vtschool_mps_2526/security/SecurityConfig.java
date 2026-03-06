@@ -17,7 +17,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests(auth -> auth
 
                         // Recursos públicos
-                        .requestMatchers("/index", "/css/", "/js/", "/images/", "/favicon.ico").permitAll()
+                        .requestMatchers("/login", "/css/", "/js/", "/images/", "/favicon.ico").permitAll()
 
                         // Rutas ADMIN
                         .requestMatchers("/admin/").hasRole("ADMIN")
@@ -30,7 +30,7 @@ public class SecurityConfig {
                 )
 
                 .formLogin(form -> form
-                        .loginPage("/index")
+                        .loginPage("/login")
                         .successHandler((request, response, authentication) -> {
 
                             var authorities = authentication.getAuthorities();

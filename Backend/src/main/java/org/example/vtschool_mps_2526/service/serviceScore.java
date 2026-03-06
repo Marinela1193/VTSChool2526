@@ -32,12 +32,25 @@ public class serviceScore {
         return score.isPresent() ?ScoreMapper.INSTANCE.mapScoreEntityToScoreDTO(score.get()):null;
     }
 
-//    public ScoreDTO getScoresByEmail(String email) {
-//        Optional<ScoreEntity> score = scoreDAO.findByEmail(email);
-//
-//        return score.isPresent() ?ScoreMapper.INSTANCE.mapScoreEntityToScoreDTO(score.get()):null;
-//    }
+    public List<ScoreDTO> getScoresByStudentIdcard(String idcard) {
+        List<ScoreDTO> scoreList = new ArrayList<>();
 
+        for (ScoreEntity scoreEntity : scoreDAO.findByEnrollmentEntity_StudentEntity_Idcard(idcard)) {
+            scoreList.add(ScoreMapper.INSTANCE.mapScoreEntityToScoreDTO(scoreEntity));
+        }
+
+        return scoreList;
+    }
+    public List<ScoreDTO> getScoresByStudentIdcardAndCourse(String idcard, Integer courseId) {
+        List<ScoreDTO> scoreList = new ArrayList<>();
+
+        for (ScoreEntity scoreEntity :
+                scoreDAO.findByEnrollmentEntity_StudentEntity_IdcardAndEnrollmentEntity_Course_Id(idcard, courseId)) {
+            scoreList.add(ScoreMapper.INSTANCE.mapScoreEntityToScoreDTO(scoreEntity));
+        }
+
+        return scoreList;
+    }
 
     public ScoreEntity saveScore(ScoreDTO score) {
 

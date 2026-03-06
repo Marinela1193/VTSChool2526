@@ -33,10 +33,10 @@ public class serviceStudent {
         return studentEntity.isPresent() ? StudentMapper.INSTANCE.mapStudentEntityToDTO(studentEntity.get()) : null;
     }
 
-    public StudentEntity getStudentByEmail(String email) {
+    public StudentsDTO getStudentByEmail(String email) {
         Optional<StudentEntity> studentEntity = studentsDAO.findByEmail(email);
 
-        return studentEntity.isPresent() ? studentEntity.get() : null;
+        return studentEntity.isPresent() ? StudentMapper.INSTANCE.mapStudentEntityToDTO(studentEntity.get()) : null;
     }
 
     public StudentEntity saveStudent(StudentsDTO student) {

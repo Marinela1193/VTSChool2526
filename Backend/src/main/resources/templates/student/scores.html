@@ -2,9 +2,41 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Scores</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
 </head>
 <body>
+<div class="vt-card">
+    <form th:action="@{/student/scores}" method="get">
+        <h1>My scores</h1>
+        <label for="course"><strong>Choose a course:</strong></label>
+        <select name="course" id="course" onchange="this.form.submit()">
+            <option value="">--None--</option>
 
+            <option th:each="c : ${courses}"
+                    th:value="${c.id}"
+                    th:text="${c.name}"
+                    th:selected="${selectedCourse != null and selectedCourse == c.id}">
+            </option>
+        </select>
+        <hr>
+        <table>
+            <thead>
+            <tr>
+                <th>Subject</th>
+                <th>Year</th>
+                <th>Score</th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr th:each="score : ${scores}">
+                    <td th:text="${score.subject.name}"></td>
+                    <td th:text="${score.subject.year}"></td>
+                    <td th:text="${score.score}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
 </body>
 </html>

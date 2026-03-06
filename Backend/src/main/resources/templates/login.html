@@ -11,7 +11,7 @@
     <h1>VT Institute</h1>
     <p class="welcome-text">Sign in</p>
 
-    <form th:action="@{/index}" method="post">
+    <form th:action="@{/login}" method="post">
         <div class="form-group">
             <label for="username">Username / Email</label>
             <input type="text" id="username" name="username" class="input-field"
@@ -24,7 +24,7 @@
                    placeholder="Enter your IdCard" required>
         </div>
 
-        <button type="submit" class="btn-container" style="width: 100%; border: none; cursor: pointer;">
+        <button type="submit" class="btn-container">
             LOGIN
         </button>
     </form>
