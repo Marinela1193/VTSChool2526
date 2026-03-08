@@ -28,7 +28,7 @@ public class serviceStudent {
     }
 
     public StudentsDTO getStudentById(int idcard) {
-        Optional<StudentEntity> studentEntity = studentsDAO.findById(idcard);
+        Optional<StudentEntity> studentEntity = studentsDAO.findById(String.valueOf(idcard));
 
         return studentEntity.isPresent() ? StudentMapper.INSTANCE.mapStudentEntityToDTO(studentEntity.get()) : null;
     }
@@ -40,7 +40,7 @@ public class serviceStudent {
     }
 
     public StudentEntity saveStudent(StudentsDTO student) {
-        Optional<StudentEntity> optional = studentsDAO.findById((student.getIdcard()));
+        Optional<StudentEntity> optional = studentsDAO.findById(String.valueOf((student.getIdcard())));
 
         if (optional.isPresent()) {
             return studentsDAO.save(StudentMapper.INSTANCE.mapStudentDTOToEntity(student));
@@ -49,10 +49,10 @@ public class serviceStudent {
     }
 
     public boolean deleteStudent(int idcard) {
-        Optional<StudentEntity> optional = studentsDAO.findById(idcard);
+        Optional<StudentEntity> optional = studentsDAO.findById(String.valueOf(idcard));
 
         if (optional.isPresent()) {
-            studentsDAO.deleteById(Integer.valueOf(idcard));
+            studentsDAO.deleteById(String.valueOf((idcard)));
             return true;
         }
         return false;
@@ -60,7 +60,7 @@ public class serviceStudent {
 
     public StudentEntity updateStudent(StudentsDTO student) {
 
-        Optional<StudentEntity> optional = studentsDAO.findById((student.getIdcard()));
+        Optional<StudentEntity> optional = studentsDAO.findById(String.valueOf((student.getIdcard())));
 
         if (optional.isPresent()) {
             StudentEntity existingStudent = optional.get();

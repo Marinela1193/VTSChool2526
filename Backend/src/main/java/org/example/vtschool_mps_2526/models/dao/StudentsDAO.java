@@ -5,7 +5,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;
 
-public interface StudentsDAO extends CrudRepository<StudentEntity, Integer> {
+public interface StudentsDAO extends CrudRepository<StudentEntity, String> {
 
 
     Optional<StudentEntity> findByFirstname(String firstname);

@@ -3,29 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <title>Enrollments</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
 
     <link rel="stylesheet" th:href="@{/style.css}">
 </head>
 <body>
+<div class="vt-card">
     <form th:action="@{/admin/enroll}" method="post">
         <h2>Enroll student</h2>
-        <div class="enroll-container" style="display: flex;">
-            <div>
+        <div class="overall-container">
+            <div class="student-container">
                 <label><strong>Student</strong></label>
                 <select name="studentIdCard" size="10" required>
                     <option th:each="s : ${students}" th:value="${s.idcard}"
                             th:text="${s.lastName + ', ' + s.firstName}"></option>
                 </select>
             </div>
-            <div>
+            <div class="course-container">
                 <label><strong>Course</strong></label>
                 <select name="courseCode" size="10" required>
                     <option th:each="c : ${courses}" th:value="${c.id}" th:text="${c.name}"></option>
                 </select>
             </div>
         </div>
-        <button type="submit">Enroll</button>
+        <button class="btn-submit" type="submit">Enroll</button>
     </form>
+</div>
 </body>
 </html>

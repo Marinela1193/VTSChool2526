@@ -11,4 +11,6 @@ public interface ScoreDAO extends CrudRepository<ScoreEntity, Integer> {
     List<ScoreEntity> findByEnrollmentEntity_StudentEntity_Idcard(String idcard);
 
     List<ScoreEntity> findByEnrollmentEntity_StudentEntity_IdcardAndEnrollmentEntity_Course_Id(String idcard, Integer courseId);
+
+    List<ScoreEntity> findByEnrollment_Id(Integer enrollmentId);
 }

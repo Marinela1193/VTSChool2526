@@ -1,6 +1,6 @@
 .vt-card {
     background-color: #89CFF0;
-    width: 250px;
+    width: 550px;
     padding: 40px;
     border-radius: 10px;
     text-align: center;
@@ -8,7 +8,16 @@
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     margin: 50px auto;
 }
-
+.vt-card1 {
+    background-color: #89CFF0;
+    width: 350px;
+    padding: 40px;
+    border-radius: 10px;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    margin: 50px auto;
+}
 .vt-card h1 {
     color: #000000;
     font-weight: bold;
@@ -34,8 +43,19 @@
     transition: background-color 0.3s;
 }
 
-.btn-container:hover {
+.btn-container:hover, .btn-submit:hover {
     background-color: #0056b3;
+}
+
+.btn-submit {
+    align-items: center;
+    background-color: #007BFF;
+    color: white;
+    padding: 15px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s;
 }
 
 .input-field {
@@ -51,4 +71,67 @@
     margin-top: 15px;
     font-weight: bold;
     font-size: 14px;
+}
+
+.overall-container {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin: 20px 0;
+}
+
+.student-container,
+.course-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.student-container select,
+.course-container select {
+    width: 220px;
+}
+
+#qualify-view{
+    color: white;
+    font-size: 14px;
+}
+.student-select{
+    margin-bottom:25px;
+}
+
+.student-select select, .subjects-container{
+    width:100%;
+    padding:8px;
+    border-radius:5px;
+}
+
+
+.subjects-header{
+    display:flex;
+    justify-content: space-evenly;
+    font-weight:bold;
+    color:white;
+    background-color: #007BFF;
+}
+
+.subject-row{
+    background:white;
+    box-shadow:0 2px 5px rgba(0,0,0,0.1);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:10px;
+}
+
+.subject-name{
+    font-size:12px;
+    font-weight:bold;
+}
+
+.subject-row select{
+    width:120px;
+    padding:6px;
+    border-radius:5px;
+    border:1px solid #ccc;
 }

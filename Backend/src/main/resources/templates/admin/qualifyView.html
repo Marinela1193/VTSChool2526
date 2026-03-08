@@ -2,33 +2,46 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Scores</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+    <title>Enrollments</title>
 
     <link rel="stylesheet" th:href="@{/style.css}">
 </head>
 <body>
-    <h2>My scores</h2>
-    <label>Choose a course:</label>
-    <select id="courseSelect">
-        <option value="">-None-</option>
-    </select>
+<div class="vt-card1">
+<form th:action="@{/admin/qualify}" method="get">
+    <h2>Qualify</h2>
+        <div class="student-select">
+            <label><strong>Choose a student:</strong></label>
+            <select name="studentIdCard" onchange="this.form.submit()" required>
+                <option th:each="s : ${students}"
+                        th:value="${s.idcard}"
+                        th:text="${s.lastName + ', ' + s.firstName + ' (' + s.idcard + ')'}">
+                </option>
 
-    <table>
-        <thead>
-        <tr>
-            <th>Subject</th>
-            <th>Year</th>
-            <th>Score</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="scoreDto : ${enrollment.scores}">
-            <td th:text="${scoreDto.subject.name}">Nombre asignatura</td>
-            <td th:text="${enrollment.year}">2026</td>
-            <td th:text="${scoreDto.score}">7</td>
-        </tr>
-        </tbody>
-    </table>
+            </select>
+        </div>
+    <div class="subjects-container">
+        <div class="subjects-header">
+            <div>SUBJECT</div>
+            <div>SCORE</div>
+        </div>
+        <div class="subject-row" th:each="subject : ${subjects}">
+            <div class="subject-name"
+                 th:text="${subject.name}">
+            </div>
+            <select name="scores">
+                <option value="">--</option>
+                <option th:each="i : ${#numbers.sequence(0,10)}"
+                        th:value="${i}"
+                        th:text="${i}">
+                </option>
+            </select>
+        </div>
+    </div>
+        <button class="btn-submit" type="submit">
+            Save scores
+        </button>
+</form>
+</div>
 </body>
 </html>

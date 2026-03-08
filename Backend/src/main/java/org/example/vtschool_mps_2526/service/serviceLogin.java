@@ -18,7 +18,7 @@ public class serviceLogin {
 
     public boolean loginUser(@Validated @RequestBody UserDTO userDTO) {
 
-        Optional< StudentEntity> optional = studentsDAO.findById(Integer.valueOf(userDTO.getPassword()));
+        Optional< StudentEntity> optional = studentsDAO.findById((userDTO.getPassword()));
 
         return optional.isPresent();
     }
