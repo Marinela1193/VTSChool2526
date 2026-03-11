@@ -61,4 +61,11 @@ public String updateStudentProfile(@ModelAttribute StudentsDTO studentDto) {
 
     return "redirect:/student/home";
 }
+
+@PutMapping("/register")
+    public String registerStudent(@ModelAttribute StudentsDTO studentDto) {
+        serviceStudent.registerStudent(studentDto);
+
+        return "redirect:/student/home";
+    }
 }

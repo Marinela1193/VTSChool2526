@@ -71,4 +71,19 @@ public class serviceStudent {
         }
         return null;
     }
+
+    public StudentEntity registerStudent(StudentsDTO student) {
+
+        Optional <StudentEntity> optional = studentsDAO.findById(String.valueOf((student.getIdcard())));
+
+        if(optional.isPresent()) {
+            if(student.getEmail() == null) {
+                StudentEntity Newstudent = optional.get();
+                Newstudent.setEmail(student.getEmail());
+
+                return studentsDAO.save(Newstudent);
+            }
+        }
+        return null;
+    }
 }
