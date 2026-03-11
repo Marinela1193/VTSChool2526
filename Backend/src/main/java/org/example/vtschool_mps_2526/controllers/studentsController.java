@@ -70,12 +70,5 @@ class studentsController {
         return ResponseEntity.badRequest().build();
     }
 
-    @PutMapping("/{idcard}")
-    public ResponseEntity<?> registerStudent(@Validated @RequestBody StudentsDTO student, @PathVariable("idcard") int idcard) {
-        StudentEntity stud = serviceStudent.registerStudent(student);
-        if(stud != null) {
-            return ResponseEntity.ok().build();
-        }
-        return ResponseEntity.badRequest().build();
-    }
+
 }
