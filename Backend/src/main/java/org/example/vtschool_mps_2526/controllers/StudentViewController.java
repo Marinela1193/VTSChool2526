@@ -63,12 +63,11 @@ public String updateStudentProfile(@ModelAttribute StudentsDTO studentDto) {
 }
 
 @PutMapping("/register")
-    public String registerStudent(Authentication authentication, Model model) {
+    public String registerStudent(@ModelAttribute StudentsDTO studentDto) {
 
-        StudentsDTO studentDto = serviceStudent.getStudentById(Integer.parseInt(authentication.getName()));
-        if(studentDto.getEmail()== null){
-            serviceStudent.updateStudent(studentDto);
-        }
+
+        serviceStudent.registerStudent(studentDto);
+
 
         return "redirect:/student/home";
     }

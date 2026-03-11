@@ -135,3 +135,7 @@
     border-radius:5px;
     border:1px solid #ccc;
 }
+
+.register-container{
+    border-width: thick;
+}

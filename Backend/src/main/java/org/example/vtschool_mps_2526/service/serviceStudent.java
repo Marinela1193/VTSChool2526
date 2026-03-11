@@ -77,11 +77,11 @@ public class serviceStudent {
         Optional <StudentEntity> optional = studentsDAO.findById(String.valueOf((student.getIdcard())));
 
         if(optional.isPresent()) {
-            if(student.getEmail() == null) {
-                StudentEntity Newstudent = optional.get();
-                Newstudent.setEmail(student.getEmail());
+            if(student.getEmail() != null) {
+                StudentEntity newStudent = optional.get();
+                newStudent.setEmail(student.getEmail());
 
-                return studentsDAO.save(Newstudent);
+                return studentsDAO.save(newStudent);
             }
         }
         return null;

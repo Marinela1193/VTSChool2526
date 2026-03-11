@@ -24,9 +24,12 @@
                    placeholder="Enter your IdCard" required>
         </div>
 
-        <button type="submit" class="btn-container">
+        <button type="submit" class="btn-submit">
             LOGIN
         </button>
+        <div class="register-container">
+            <a th:href="@{/student/register}">Click here to register</a>
+        </div>
     </form>
 
     <div th:if="${param.error}" class="error-msg">
