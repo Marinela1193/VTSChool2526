@@ -83,7 +83,7 @@ import java.util.List;
         System.out.println("-e, --enroll {studentId} {courseId}: enroll a student in a course");
         System.out.println("-p, --print {studentId} {courseId}: show the scores of a student in a course");
         System.out.println("-q, --qualify {studentId} {courseId}: introduce the scores obtained by the student in the course.");
-
+        System.out.println("-r, --register {studentId} {email}:  introduce the id or email to register the student.
     }
 
     public static void addStudentsXMLFile(String filename) {
